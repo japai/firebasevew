@@ -1,0 +1,137 @@
+<html>
+    <head>
+
+<link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Architects Daughter' rel='stylesheet'>
+        <meta charset="utf-8">
+        <meta name="description" content="tutorial for use firebase">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Free Chat ch1</title>
+        <style>
+
+  body {
+  font-family: 'Prompt', sans-serif;
+background-color: hsla(9, 100%,60%, 0.2);
+}
+ .chatlog  {
+   background-color: hsla(9, 100%,60%, 0.2);
+font-family: 'Prompt', sans-serif;
+              height:400px;
+              width:450px;
+              border:4px dotted;
+              overflow-y: scroll;
+              margin-bottom:10px;
+              padding:10px;
+              margin: auto;
+            }
+            .button {
+            font-family: 'Prompt', sans-serif;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;}
+
+    .button:hover {
+        background-color: #45a048;
+    }
+
+    input[type=text] {
+    font-family: 'Prompt', sans-serif;
+      width:190px;
+        padding: 12px 20px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        box-sizing: border-box;
+    }
+    h1 {
+    font-family: 'Architects Daughter';
+      font-size: 26px;
+      width:125px;
+    padding:2px;
+    margin:auto;
+      }
+      h2 {
+      font-family: 'Architects Daughter';
+        font-size: 18px;
+        width:125px;
+      padding:2px;
+      margin:auto;
+        }
+
+        a:link, a:visited {
+
+      background-color: #f44339;
+      font-family: 'Prompt', sans-serif;
+      width:125px;
+      color: white;
+      padding: 14px 25px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      }
+
+
+      a:hover, a:active {
+      background-color: red;
+      }
+
+        </style>
+    </head>
+    <body>
+      <tr>
+        <th></th>
+    <th>
+    <center><h1 style="background-color:rgb(255, 80, 71);">Free chat </h1></center>
+<center><h2 style="background-color:rgb(255, 80, 71);">Channel </h2></center>
+        <div class="chatlog"></div>
+      <center> <input type="text" id="name"placeholder="your name"
+        id="message" onkeydown="return nextbox(event, 'message');">
+        <input type="text"  id="message"placeholder="message"
+          onkeydown="return nextbox(event, 'send');">
+      <button class="button" id="send"value="send" onclick="send();message.value='';">>Go!</button></center>
+      <br>
+
+        <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script src="https://cdn.firebase.com/js/client/2.0.6/firebase.js"></script>
+        <script>
+
+            var myFirebaseRef = new Firebase("https://chat-c50d9.firebaseio.com/");
+            var chatRef = myFirebaseRef.child("chatroom");
+
+            chatRef.limitToLast(10).on("child_added", function(data){
+              msgData = data.val();
+              $(".chatlog").append(msgData.name + " : " + msgData.message + "<br>");
+            });
+
+            function send() {
+              chatRef.push({
+                name: $("#name").val(),
+                message: $("#message").val()
+              });
+            }
+              function nextbox(e, id) {
+               // ��ҹ keycode (cross browser)
+                var keycode = e.which || e.keyCode;
+                // ��Ǩ�ͺ keycode (13 ��� �� enter)
+                if (keycode == 13) {
+                    // ����⿡�����ѧ input ��� id
+                    document.getElementById(id).focus();
+                    // return false �����¡��ԡ��� submit form
+                    return false;
+                }
+            }
+        </script>
+<br>
+</th>
+<th></th>
+</tr>
+
+    </body>
+</html>
